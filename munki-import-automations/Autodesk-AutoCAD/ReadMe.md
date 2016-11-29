@@ -4,8 +4,10 @@ Scripts and notes for deploying Autodesk AutoCAD with Munki.
 
 ## Challenges to Deployment ##
 AutoCAD is distributed on a disk image with an Apple pkg inside.  But there are some challenges to its deployment:
+
 1. **Licensing**: When the installed app is run, it expects to find license information in a “licpath.lic” file which the vendor recommends deploying inside the app wrapper (*/Applications/Autodesk/AutoCAD 2016/AutoCAD.app/Contents/licpath.lic* for example).<sup>2</sup>  Unfortunately, testing proves this technique does not work for AutoCAD 2016.
    * Watching an AutoCAD 2016 installation, it's obvious that the vendor uses a custom Installer plugin to write a temporary file to */tmp/acodeAutoCAD2016*.  This file contains product key, serial, and license server information in a special format.<sup>2</sup>  This only works if installing in an interactive fashion, not via a command-line installation environment.
+
 2. **Dock Icon**: Since we're installing in a command line environment, the package for adding the icon to the Dock is not reliable.  It must be disabled so that the command-line installation works.
 
 ## Deployment Overview ##
