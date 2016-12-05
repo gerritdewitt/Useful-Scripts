@@ -42,6 +42,7 @@ Deployment Method
    * The script is interactive.  It will ask for:
       - The base path to the Munki repo, if that is not set as a shell environment variable.
       - The AutoCAD version.
+      - The path to the installed AutoCAD app, relative to the client.
       - The path to the Autodesk AutoCAD disk image relative to the Munki repository's *pkgs* directory.
       - The AutoCAD serial and product key.
       - The license server host name.
