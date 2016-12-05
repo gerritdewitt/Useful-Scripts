@@ -9,7 +9,7 @@
 # Copyright Georgia State University.
 # This script uses publicly-documented methods known to those skilled in the art.
 
-import os, uuid, xml, plistlib, subprocess, sys
+import os, xml, plistlib, subprocess, sys
 
 # General variables; edit to suit your needs:
 global ITEM_MUNKI_NAME,ITEM_MUNKI_DISP_NAME,ITEM_MUNKI_MIN_OS, ITEM_MUNKI_CATALOG_NAME, ITEM_MUNKI_DESCRIPTION, ITEM_MUNKI_DEVELOPER_NAME, ITEM_MUNKI_CATEGORY, ITEM_MUNKI_PREINSTALL_SCRIPT_CONTENT_TEMPLATE
