@@ -21,11 +21,11 @@ ITEM_MUNKI_DEVELOPER_NAME = "Apple"
 global ITEM_MUNKI_HW_BUNDLE_DESCRIPTION, ITEM_MUNKI_PREINSTALL_SCRIPT_CONTENT_TEMPLATE
 ITEM_MUNKI_HW_BUNDLE_DESCRIPTION = "__%APP%__ is available to Mac systems with a hardware bundle license for it.  Generally, this should be all Mac computers shipping on or after its release on October 23, 2013.  It may also be deployed to systems for which a VPP license was purchased."
 ITEM_MUNKI_PREINSTALL_SCRIPT_CONTENT_TEMPLATE = '''#!/bin/bash
-    suffix="$(/bin/date +%h%m%s)"
-    if [ -d "__%APP_PATH%__" ]; then
-        mv "__%APP_PATH%__" "/private/tmp/__%APP%__-${suffix}"
-    fi
-    '''
+suffix="$(/bin/date +%h%m%s)"
+if [ -d "__%APP_PATH%__" ]; then
+   mv "__%APP_PATH%__" "/private/tmp/__%APP%__-${suffix}"
+fi
+'''
 
 global ITEM_MUNKI_INSTALLS_ARRAY
 ITEM_MUNKI_INSTALLS_ARRAY = []
