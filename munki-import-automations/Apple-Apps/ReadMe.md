@@ -63,7 +63,7 @@ Deployment Method
 On a test or administrative Mac system:
 1. Open the App Store.  Sign in using the appropriate Apple ID.
 2. If the app is already installed, delete it.  We do this so the App Store will let us download it again, and so we get the current and complete pkg from Apple. 
-   - For '''example''':
+   - For **example**:
    - <pre>sudo rm -rf /Applications/Keynote.app</pre>
 3. Check the **Purchases** and **Updates** tabs to be sure that no app downloads are in progress, and that none are paused.
    - This technique is meant to download and capture installer packages serially.
@@ -98,7 +98,7 @@ The goal here is to verify that you have captured a valid installer package.
 1. Once the captured package is validated, copy it to the **pkgs** directory in your Munki repository.  The pkg itself needs no modification.
    - Use a good naming convention; for example: *Apple_Keynote-version.pkg*.
    - By not modifying the captured package, you are preserving its code signature and proof of integrity.
-2. Run the *make-pkginfo.py* script and follow its prompts to generate the ''pkginfo'' file.  For example:
+2. Run the *make-pkginfo.py* script and follow its prompts to generate the *pkginfo* file.  For example:
    <pre>./make-pkginfo.py</pre>
    * The script is interactive.  It will ask for:
       - The app pkg name (example: **Apple_Keynote**)
@@ -127,3 +127,4 @@ Sources
    - http://pivotallabs.com/accessing-the-packages-that-underlie-apple-s-app-store/
    - https://jonbrown.org/blog/10-9-deploying-appstore-packages/
    - https://derflounder.wordpress.com/2013/08/22/downloading-apples-server-app-installer-package/
+
