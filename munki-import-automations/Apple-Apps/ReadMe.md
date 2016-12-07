@@ -60,7 +60,8 @@ Before You Begin
 Deployment Method
 ----------
 ## Capture Package from App Store ##
-On a test or administrative Mac system: 
+On a test or administrative Mac system:
+
 1. Open the App Store.  Sign in using the appropriate Apple ID.
 2. If the app is already installed, delete it.  We do this so the App Store will let us download it again, and so we get the current and complete pkg from Apple. 
    - For **example**:
