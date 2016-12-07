@@ -1,18 +1,44 @@
 Microsoft Office Settings Profile
 ----------
-The _make-mobileconfig-and-pkginfo.py_ script generates an Apple configuration profile with a _com.apple.ManagedClient.preferences_ payload holding these settings:
-* *com.microsoft.autoupdate2*: Sets the _HowToCheck_ key to &#8220;manual.&#8221;  Prevents update alerts.
-* *com.microsoft.error_reporting*: Sets the _SQMReportsEnabled_ and _ShipAssertEnabled_ keys to false.  In conjunction with the keys in the _com.microsoft.office_ preference, this prevents first run alerts.
-* *com.microsoft.office*: Sets the _14\FirstRun\SetupComplete_ key and fills in the _14\UserInfo\UserName_ and _14\UserInfo\UserOrganization_ keys with the string &#8220;GSU.&#8221;  In conjunction with the keys in the _com.microsoft.error_reporting_ preference, this prevents first run alerts.
-* *com.microsoft.Outlook* and *com.microsoft.onenote.mac*: Sets these keys:
-   * _kSubUIAppCompletedFirstRunSetup1507_: sets to true to skip a first run window
-   * _FirstRunExperienceCompletedO15_: sets to true to skip a first run window
-   * _SendAllTelemetryEnabled_: sets to false to skip reporting of errors to Microsoft
-* *com.microsoft.PowerPoint*, *com.microsoft.Excel*, and *com.microsoft.Word*: Sets these keys:
-   * _kSubUIAppCompletedFirstRunSetup1507_: sets to true to skip a first run window
-   * _SendAllTelemetryEnabled_: sets to false to skip reporting of errors to Microsoft
+The **make-mobileconfig-and-pkginfo.py** script generates an Apple configuration profile with a **com.apple.ManagedClient.preferences** payload holding these settings:
+* **com.microsoft.autoupdate2**: Sets this key:
+   - **HowToCheck**: sets to the string “manual”
+* **com.microsoft.error_reporting**: Sets these keys:
+   -  **SQMReportsEnabled**: sets to false
+   -  **ShipAssertEnabled**: sets to false
+* **com.microsoft.office**: Sets these keys.  In conjunction with the keys in the **com.microsoft.error_reporting** preference, this prevents first run alerts.
+   - **14\FirstRun\SetupComplete**: sets to true
+   - **14\UserInfo\UserName**: sets to your organization's name (as requested by the *make-mobileconfig-and-pkginfo.py* script)
+   - **14\UserInfo\UserOrganization** same as **14\UserInfo\UserName**
+* **com.microsoft.Outlook** and **com.microsoft.onenote.mac**: Sets these keys:
+   - **kSubUIAppCompletedFirstRunSetup1507**: sets to true to skip a first run window
+   - **FirstRunExperienceCompletedO15**: sets to true to skip a first run window
+   - **SendAllTelemetryEnabled**: sets to false to skip reporting of errors to Microsoft
+* **com.microsoft.PowerPoint**, **com.microsoft.Excel**, and **com.microsoft.Word**: Sets these keys:
+   - **kSubUIAppCompletedFirstRunSetup1507**: sets to true to skip a first run window
+   - **SendAllTelemetryEnabled**: sets to false to skip reporting of errors to Microsoft
 
-Because this is an “admin script” designed to be run from an admin Mac, you may have to hand-edit various parameters in it whenever you need to generate an updated or modified profile.  The script itself has a good deal of inline documentation.
+Before You Begin
+----------
+* Review and modify the *make-mobileconfig-and-pkginfo.py* script as necessary for your environment.  The script is easy to read, and there are some global variables that control names, descriptions, etc.
+   - This script will need modification to add new preference keys as new versions of Micrsoft Office apps are released.
+
+Running the Script
+----------
+1. Run the *make-mobileconfig-and-pkginfo.py* script and follow its prompts to generate the *pkginfo* file.  For example:
+   <pre>./make-pkginfo.py</pre>
+   * The script is interactive.  It will ask for:
+      - The base path to the Munki repo, if that is not set as a shell environment variable.
+      - Your organization's prefix (e.g. *org.sample*)
+      - A version for the configuration profile.
+      - A display name for your organization (e.g. *Some State University*)
+      - The config profile's display name (e.g. *Microsoft Office Settings*)
+      - The config profile's description (the line shown below the display name)
+   * Profile and payload UUIDs are created dynamically. Payload identifiers are similarly programmatically generated strings using your organization's prefix.
+2. Update catalogs, and add the software to the appropriate manifest(s); for *example*:
+   <pre>makecatalogs</pre>
+   <pre>manifestutil --add-pkg Configuration_Microsoft_Office.mobileconfig --section managed_installs --manifest common_optional_installs</pre>
+
 
 Author
 ----------
