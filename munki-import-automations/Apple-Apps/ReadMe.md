@@ -89,6 +89,7 @@ On a test or administrative Mac system:
 
 ## Test Install Captured Package ##
 The goal here is to verify that you have captured a valid installer package.
+
 1. Delete the app as installed by the App Store; for **example**:
 <pre>sudo rm -rf /Applications/Keynote.app</pre>
 2. Install the captured package.  You can do this quickly with *installer*.  Using our **example**:
