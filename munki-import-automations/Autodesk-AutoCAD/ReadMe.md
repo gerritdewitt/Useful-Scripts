@@ -37,7 +37,7 @@ Deployment Method
 
 ## Add AutoCAD to the Repository ##
 1. Copy the Autodesk AutoCAD disk image to the munki repository.  Use a good naming convention; for example: *Autodesk_AutoCAD-version.dmg*, where *version* is the *CFBundleVersion* number determined when you installed AutoCAD on a test Mac.
-2. Run the *make-pkginfo.py* script and follow its prompts to generate the ''pkginfo'' file.  For example:
+2. Run the *make-pkginfo.py* script and follow its prompts to generate the *pkginfo* file.  For example:
    <pre>./make-pkginfo.py</pre>
    * The script is interactive.  It will ask for:
       - The base path to the Munki repo, if that is not set as a shell environment variable.
