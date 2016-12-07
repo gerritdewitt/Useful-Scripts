@@ -43,7 +43,7 @@ Deployment Overview
 1. The Installer package for the app will need to be captured from the Mac App Store.
 2. The captured package should be installed on a test Mac to make sure the app installs and functions properly.
 3. We'll programmatically create a *pkginfo* file for the captured “pkg”.  The *make-pkginfo.py* script serves this purpose.
-   * The *make-pkginfo.py* script is interactive, and will ask for information required to generate the *pkginfo* metadata.
+   - The *make-pkginfo.py* script is interactive, and will ask for information required to generate the *pkginfo* metadata.
 
 ## About Capturing Packages ##
 Anything from the Mac App Store distributed via Munki must be “captured”; for deployment because Apple doesn't (yet) offer a means for acquiring the installer packages easily.
@@ -60,7 +60,7 @@ Before You Begin
 Deployment Method
 ----------
 ## Capture Package from App Store ##
-On a test or administrative Mac system:
+On a test or administrative Mac system: 
 1. Open the App Store.  Sign in using the appropriate Apple ID.
 2. If the app is already installed, delete it.  We do this so the App Store will let us download it again, and so we get the current and complete pkg from Apple. 
    - For **example**:
