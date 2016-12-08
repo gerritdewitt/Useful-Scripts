@@ -14,7 +14,7 @@ AutoCAD is distributed on a disk image with an Apple pkg inside.  But there are 
 1. The Autodesk AutoCAD disk image should be copied to the Munki repository.  No changes are necessary to the disk image.
 2. We'll programmatically create a *pkginfo* file for the “pkg” (the disk image containing the pkg - the Autodesk AutoCAD disk image).  The *make-pkginfo.py* script serves this purpose.
    * The *make-pkginfo.py* script will request information about the version and installed path for the AutoCAD app.
-      - This information must be obtained by installing AutoCAD on a test Mac first.
+      - This information should be obtained by installing AutoCAD on a test Mac first.
    * The *make-pkginfo.py* script will request AutoCAD license information.  
       - The resulting pkginfo will contain a preinstall script that writes */tmp/acodeAutoCAD2016* with the given license information.
    * The *make-pkginfo.py* script will request a *choice changes XML file*.
@@ -40,12 +40,12 @@ Deployment Method
 2. Run the *make-pkginfo.py* script and follow its prompts to generate the *pkginfo* file.  For example:
    <pre>./make-pkginfo.py</pre>
    * The script is interactive.  It will ask for:
-      - The base path to the Munki repo, if that is not set as a shell environment variable.
-      - The AutoCAD version.
-      - The path to the installed AutoCAD app, relative to the client.
-      - The path to the Autodesk AutoCAD disk image relative to the Munki repository's *pkgs* directory.
-      - The AutoCAD serial and product key.
-      - The license server host name.
+      - The base path to the Munki repo, if that is not set as a shell environment variable
+      - The AutoCAD version
+      - The path to the installed AutoCAD app, relative to the client
+      - The path to the Autodesk AutoCAD disk image relative to the Munki repository's *pkgs* directory
+      - The AutoCAD serial and product key
+      - The license server host name
       - The path to the installer choice changes XML file.  The included *choice_changes-AutoCAD-2016.plist* file works for AutoCAD 2016.
 3. Update catalogs, and add the software to the appropriate manifest(s); for *example*:
    <pre>makecatalogs</pre>
