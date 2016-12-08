@@ -72,14 +72,14 @@ On a test or administrative Mac system:
    - Don't let the App Store get to the “installing” phase.
 5. Determine the location of the download folder.  It's somewhere in **/private/var/folders**. Earlier versions of macOS had a “debug menu” for the App Store<sup>3</sup>, but that feature appears to be missing in macOS Sierra. You can still find the app's download path by doing the following.
    - Find the location of the downloads folder by running this search for *pfpkg* files in */private/var/folders*:
-   - <pre>pf_package_path=$(find /private/var/folders -name *.pfpkg)</pre>
+   - <pre>sudo pf_package_path=$(find /private/var/folders -name *.pfpkg)</pre>
    - Verify that the **pf_package_path** exists (and is not a list of paths).  You can do this quickly with *ls*:
-   - <pre>ls "$pf_package_path" # You should see one path, ending in .pfpkg </pre>
+   - <pre>sudo ls "$pf_package_path" # You should see one path, ending in .pfpkg </pre>
    - Provided you have a single *.pfpkg* path, get the *actual package path* from its parent directory:
-   - <pre>parent_dir=$(dirname "$pf_package_path")</pre>
-   - <pre>package_path=$(find "$parent_dir" -name \*.pkg)</pre>
+   - <pre>sudo parent_dir=$(dirname "$pf_package_path")</pre>
+   - <pre>sudo package_path=$(find "$parent_dir" -name \\*.pkg)</pre>
    - Verify that the **package_path** exists (and is not a list of paths).  Again, with *ls*:
-   - <pre>ls "$package_path" # You should see one path, ending in .pkg </pre>
+   - <pre>sudo ls "$package_path" # You should see one path, ending in .pkg </pre>
    - An App Store **package_path** looks like this: */private/var/folders/j7/h60wxfp15c74y0kkcthtnrpr4y0r3l/C/com.apple.appstore/424389933/bqa1145527233661137693.pkg*
 6. Create *another* hard link for the package being downloaded; for **example**:
    - <pre>ln "$package_path" /tmp/keynote.pkg</pre>
@@ -129,4 +129,3 @@ Sources
    - http://pivotallabs.com/accessing-the-packages-that-underlie-apple-s-app-store/
    - https://jonbrown.org/blog/10-9-deploying-appstore-packages/
    - https://derflounder.wordpress.com/2013/08/22/downloading-apples-server-app-installer-package/
-
