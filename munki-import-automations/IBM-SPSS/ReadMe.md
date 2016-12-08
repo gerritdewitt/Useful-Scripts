@@ -49,7 +49,7 @@ COMPANYNAME=Your Organization
 2. Run the *make-pkginfo.py* script and follow its prompts to generate the *pkginfo* file.  For example:
    <pre>./make-pkginfo.py</pre>
    * The script is interactive.  It will ask for:
-      - The base path to the Munki repo, if that is not set as a shell environment variable.
+      - The base path to the Munki repo, if that is not set as a shell environment variable
       - The SPSS version
       - The path to the installed SPSS Statistics app, relative to the client
       - The path to the IBM SPSS Statistics disk image relative to the Munki repository's *pkgs* directory
