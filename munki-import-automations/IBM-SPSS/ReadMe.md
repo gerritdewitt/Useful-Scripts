@@ -54,7 +54,6 @@ COMPANYNAME=Your Organization
       - The SPSS version
       - The path to the installed SPSS Statistics app, relative to the client
       - The path to the IBM SPSS Statistics disk image relative to the Munki repository's *pkgs* directory
-      - Activation information
       - The license server host name
       - The licensee
 3. Update catalogs, and add the software to the appropriate manifest(s); for *example*:
