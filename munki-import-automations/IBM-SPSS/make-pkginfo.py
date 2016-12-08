@@ -28,7 +28,6 @@ license_data_content="
 INSTALLER_UI=silent
 LICENSE_ACCEPTED=true
 network=1
-AUTHCODE=__%app_auth_code%__
 InstallPython=1
 LSHOST=__%app_license_server%__
 COMMUTE_MAX_LIFE=7
@@ -93,14 +92,14 @@ def create_items_to_copy_cmds():
             args.append(dest_path_str)
     return args
 
-def create_pkginfo(given_app_version,given_app_munki_installs_path,given_repo_path_to_pkg,given_app_license_server,given_app_licensee,given_app_auth_code):
+def create_pkginfo(given_app_version,given_app_munki_installs_path,given_repo_path_to_pkg,given_app_license_server,given_app_licensee):
     '''Makes the pkginfo for this item.'''
     # Paths:
     munki_repo_pkg_path = os.path.join(MUNKI_PKGS_PATH,given_repo_path_to_pkg)
     munki_repo_pkginfo_path = os.path.join(MUNKI_PKGSINFO_PATH,"%(name)s-%(vers)s" % {"name": ITEM_MUNKI_NAME,"vers":given_app_version})
     print "Pkginfo will be %s." % munki_repo_pkginfo_path
     # Postinstall script content:
-    postinstall_script_content = ITEM_MUNKI_POSTINSTALL_SCRIPT_CONTENT_TEMPLATE.replace("__%app_licensee%__",given_app_licensee).replace("__%app_license_server%__",given_app_license_server).replace("__%app_auth_code%__",given_app_auth_code)
+    postinstall_script_content = ITEM_MUNKI_POSTINSTALL_SCRIPT_CONTENT_TEMPLATE.replace("__%app_licensee%__",given_app_licensee).replace("__%app_license_server%__",given_app_license_server)
     # Call makepkginfo:
     cmd = ['/usr/local/munki/makepkginfo',
            '--name=%s' % ITEM_MUNKI_NAME,
@@ -167,10 +166,9 @@ def main():
     repo_path_to_pkg = raw_input("Path to the item in repo (relative to %s): " % MUNKI_PKGS_PATH)
     app_license_server = raw_input("License server hostname: ")
     app_licensee = raw_input("Licensee: ")
-    app_auth_code = raw_input("License Auth Code: ")
 
     # Generate pkginfo:
-    if not create_pkginfo(app_version,app_munki_installs_path,repo_path_to_pkg,app_license_server,app_licensee,app_auth_code):
+    if not create_pkginfo(app_version,app_munki_installs_path,repo_path_to_pkg,app_license_server,app_licensee):
         print "Failed to create pkginfo."
         sys.exit(1)
     # All OK if here:
