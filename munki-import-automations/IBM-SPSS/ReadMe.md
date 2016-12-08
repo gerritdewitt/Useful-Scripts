@@ -16,7 +16,7 @@ Historically, IBM has also provided a UI-driven VISE installer, but that is simp
 1. The IBM SPSS disk image should be copied to the Munki repository.  No changes are necessary to the disk image.
 2. We'll programmatically create a *pkginfo* file for the “pkg” (the disk image containing the “silent installer” bash archive).  The *make-pkginfo.py* script serves this purpose.
    * The *make-pkginfo.py* script will request information about the version and installed path for the IBM SPSS app.
-      - This information must be obtained by installing IBM SPSS on a test Mac first.
+      - This information should be obtained by installing IBM SPSS on a test Mac first.
    * The *make-pkginfo.py* script will request IBM SPSS license information and other relevant details.  
       - The resulting pkginfo will contain a postinstall script that writes */tmp/installer.properties* with the given license information.
       - The postinstall will call the bash archive and perform the installation, then clean up.
