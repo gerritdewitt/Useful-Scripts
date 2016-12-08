@@ -8,8 +8,7 @@ IBM provides a “silent installer” for SPSS Statistics as a bash archive in a
 Historically, IBM has also provided a UI-driven VISE installer, but that is simply not suitable for mass deployment and automatic licensing.  Make sure you use the “silent installer” instead.
 
 1. **Licensing**: The bash archive expects to be fed a path to an **installer properties file** which contains license information, including type, address of the license server, etc.  Fortunately, this format is rather straightforward.  IBM includes an example *installer.properties* file in the disk image with the bash archive.  The file is heavily commented, and there are examples and notes online.<sup>2</sup>
-
-    - We could simply copy the *installer.properties* file from the disk image and modify it via postinstall script before calling the bash archive; however, our *make-pkginfo.py* script simply generates a very simple *installer.properties* file “from scratch” using information it collects when run.
+   - We could simply copy the *installer.properties* file from the disk image and modify it via postinstall script before calling the bash archive; however, our *make-pkginfo.py* script simply generates a very simple *installer.properties* file “from scratch” using information it collects when run.
 
 2. **Install the Installer Problem**: Creating the *pkginfo* for this item requires knowing about Munki's “copy from dmg” installation method, and a solid understanding of how Munki determines if something is installed.<sup>1</sup>
 
