@@ -34,7 +34,6 @@ Deployment Method
 <pre>INSTALLER_UI=silent
 LICENSE_ACCEPTED=true
 network=1
-AUTHCODE=yourAuthCode
 InstallPython=1
 LSHOST=hostname.of.license.server
 COMMUTE_MAX_LIFE=7
