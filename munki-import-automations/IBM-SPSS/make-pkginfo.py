@@ -5,7 +5,7 @@
 # Documentation & References: See closest ReadMe.
 
 # Written by Gerrit DeWitt (gdewitt@gsu.edu)
-# 2015-08-24/28, 2015-09-11 (config profile and pkginfo creation), 2015-11-24 (conditions), 2015-11-25, 2015-12-07, 2016-03-21 (EndNote), 2016-07-28, 2016-08-30, 2016-10-03, 2016-11-09, 2016-11-14, 2016-11-29 (Autodesk), 2016-12-07.
+# 2015-08-24/28, 2015-09-11 (config profile and pkginfo creation), 2015-11-24 (conditions), 2015-11-25, 2015-12-07, 2016-03-21 (EndNote), 2016-07-28, 2016-08-30, 2016-10-03, 2016-11-09, 2016-11-14, 2016-11-29 (Autodesk), 2016-12-07, 2016-12-09.
 # Copyright Georgia State University.
 # This script uses publicly-documented methods known to those skilled in the art.
 
@@ -20,11 +20,19 @@ ITEM_MUNKI_CATALOG_NAME = "software"
 ITEM_MUNKI_DEVELOPER_NAME = "IBM"
 ITEM_MUNKI_CATEGORY = "Math & Statistics"
 ITEM_MUNKI_DESCRIPTION = "Installs IBM SPSS configured to use the license server."
-# This script template is likely to require adjustment for each major IBM SPSS version:
+
+# Script templates:
+# These are likely to require adjustment for each major IBM SPSS version.
+global ITEM_MUNKI_POSTINSTALL_SCRIPT_CONTENT_TEMPLATE
 ITEM_MUNKI_POSTINSTALL_SCRIPT_CONTENT_TEMPLATE = '''#!/bin/bash
 installer_bin="/private/tmp/SPSS_Statistics_Installer.bin"
-license_data_file="/private/tmp/installer.properties"
-license_data_content="
+# Used by installer:
+installer_license_file_path="/private/tmp/installer.properties"
+# Installed path for license info:
+spssprod_inf_file_path="__%app_munki_installs_path%__/Contents/bin/spssprod.inf"
+fixed_spssprod_inf_file_path="__%app_munki_installs_path%__/Contents/bin/spssprod.inf.fixed"
+
+installer_license_content="
 INSTALLER_UI=silent
 LICENSE_ACCEPTED=true
 network=1
@@ -33,13 +41,21 @@ LSHOST=__%app_license_server%__
 COMMUTE_MAX_LIFE=7
 COMPANYNAME=__%app_licensee%__
 "
-echo "$license_data_content" > "$license_data_file"
+/bin/echo "$installer_license_content" > "$installer_license_file_path"
 
 # Call vendor installer:
-"$installer_bin" -f "$license_data_file"
+"$installer_bin" -i silent -f "$installer_license_file_path"
+
+# Correct content of spssprod.inf:
+if [ ! -f "$spssprod_inf_file_path" ]; then
+    exit 1
+fi
+
+/usr/bin/sed "s|DaemonHost=.*|DaemonHost=__%app_license_server%__|g" "$spssprod_inf_file_path" > "$fixed_spssprod_inf_file_path"
 if [ "$?" != "0" ]; then
     exit 1
 fi
+/bin/mv "$fixed_spssprod_inf_file_path" "$spssprod_inf_file_path"
 
 # Correct permissions:
 /usr/sbin/chown -R root:admin "/Applications/IBM"
@@ -47,19 +63,27 @@ fi
 
 # Clean up:
 if [ -f "$installer_bin" ]; then
-    rm "$installer_bin"
+    /bin/rm "$installer_bin"
 fi
-if [ -f "$license_data_file" ]; then
-    rm "$license_data_file"
+if [ -f "$installer_license_file_path" ]; then
+    /bin/rm "$installer_license_file_path"
+fi
+'''
+global ITEM_MUNKI_UNINSTALL_SCRIPT_CONTENT_TEMPLATE
+ITEM_MUNKI_UNINSTALL_SCRIPT_CONTENT_TEMPLATE = '''#!/bin/bash
+app_path="__%app_munki_installs_path%__"
+parent_dir="$(/usr/bin/dirname "$app_path")"
+if [ -d "$parent_dir" ]; then
+    /bin/rm -fr "$parent_dir"
 fi
 '''
 
 global ITEMS_TO_COPY
 ITEMS_TO_COPY = []
-COPY_ITEM_1 = {'destination_path':"/private/tmp",
-'source_item':"SPSS_Statistics_Installer.bin",
+COPY_ITEM = {'destination_path':"/private/tmp",
+'source_item':"replaced by create_pkginfo()",
 'destination_item':"SPSS_Statistics_Installer.bin"}
-ITEMS_TO_COPY.append(COPY_ITEM_1)
+ITEMS_TO_COPY.append(COPY_ITEM)
 
 global ITEM_MUNKI_INSTALLS_ARRAY
 ITEM_MUNKI_INSTALLS_ARRAY = []
@@ -92,14 +116,16 @@ def create_items_to_copy_cmds():
             args.append(dest_path_str)
     return args
 
-def create_pkginfo(given_app_version,given_app_munki_installs_path,given_repo_path_to_pkg,given_app_license_server,given_app_licensee):
+def create_pkginfo(given_app_version,given_app_munki_item_to_copy_source_item,given_app_munki_installs_path,given_repo_path_to_pkg,given_app_license_server,given_app_licensee,given_app_munki_update_for,given_app_requires):
     '''Makes the pkginfo for this item.'''
     # Paths:
     munki_repo_pkg_path = os.path.join(MUNKI_PKGS_PATH,given_repo_path_to_pkg)
     munki_repo_pkginfo_path = os.path.join(MUNKI_PKGSINFO_PATH,"%(name)s-%(vers)s" % {"name": ITEM_MUNKI_NAME,"vers":given_app_version})
     print "Pkginfo will be %s." % munki_repo_pkginfo_path
     # Postinstall script content:
-    postinstall_script_content = ITEM_MUNKI_POSTINSTALL_SCRIPT_CONTENT_TEMPLATE.replace("__%app_licensee%__",given_app_licensee).replace("__%app_license_server%__",given_app_license_server)
+    postinstall_script_content = ITEM_MUNKI_POSTINSTALL_SCRIPT_CONTENT_TEMPLATE.replace("__%app_licensee%__",given_app_licensee).replace("__%app_license_server%__",given_app_license_server).replace("__%app_munki_installs_path%__",given_app_munki_installs_path)
+    # Uninstall script content:
+    uninstall_script_content = ITEM_MUNKI_UNINSTALL_SCRIPT_CONTENT_TEMPLATE.replace("__%app_munki_installs_path%__",given_app_munki_installs_path)
     # Call makepkginfo:
     cmd = ['/usr/local/munki/makepkginfo',
            '--name=%s' % ITEM_MUNKI_NAME,
@@ -110,6 +136,9 @@ def create_pkginfo(given_app_version,given_app_munki_installs_path,given_repo_pa
            '--unattended_install',
            '--pkgvers=%s' % given_app_version,
            '--displayname=%s' % ITEM_MUNKI_DISP_NAME]
+    # Update source item for "items to copy":
+    ITEMS_TO_COPY[0]['source_item'] = given_app_munki_item_to_copy_source_item
+    # Make "items to copy" arg string:
     itc_args = create_items_to_copy_cmds()
     if not itc_args:
         return False
@@ -142,6 +171,15 @@ def create_pkginfo(given_app_version,given_app_munki_installs_path,given_repo_pa
         output_dict['installs'][0]['path'] = given_app_munki_installs_path
     except KeyError, IndexError:
         pass
+    output_dict['requires'] = [given_app_requires]
+    if given_app_munki_update_for:
+        output_dict['update_for'] = [given_app_munki_update_for]
+    # Uninstall method:
+    output_dict['uninstall_method'] = "uninstall_script"
+    try:
+        output_dict['uninstall_script'] = uninstall_script_content
+    except NameError:
+        pass
 
     plistlib.writePlist(output_dict,munki_repo_pkginfo_path)
     return True
@@ -166,9 +204,21 @@ def main():
     repo_path_to_pkg = raw_input("Path to the item in repo (relative to %s): " % MUNKI_PKGS_PATH)
     app_license_server = raw_input("License server hostname: ")
     app_licensee = raw_input("Licensee: ")
+    print '''
+Is this version a fix patch for another version of SPSS?
+   - If not a patch, simply press return.
+   - If a patch, provide the name key of the parent SPSS it patches.
+'''
+    app_munki_update_for = raw_input("Update For: ").replace(' ','').replace('\n','')
+    app_requires = raw_input("Munki name of Java JDK (requirement for SPSS): ")
+
+    # Determine item to copy. It is different for fix patches:
+    app_munki_item_to_copy_source_item = "SPSS_Statistics_Installer.bin"
+    if app_munki_update_for:
+        app_munki_item_to_copy_source_item = "SPSS_Statistics_Installer_Mac_Patch.bin"
 
     # Generate pkginfo:
-    if not create_pkginfo(app_version,app_munki_installs_path,repo_path_to_pkg,app_license_server,app_licensee):
+    if not create_pkginfo(app_version,app_munki_item_to_copy_source_item,app_munki_installs_path,repo_path_to_pkg,app_license_server,app_licensee,app_munki_update_for,app_requires):
         print "Failed to create pkginfo."
         sys.exit(1)
     # All OK if here:
