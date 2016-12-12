@@ -26,7 +26,8 @@ Historically, IBM has also provided a UI-driven VISE installer, but that is simp
       - If the version of SPSS is a fix patch, the *update_for* key will be set according to script input.
       - It will contain a postinstall script that writes */tmp/installer.properties* with the given license information.
       - The postinstall will call the bash archive and perform the installation, then clean up.
-      - The postinstall also includes logic to properly set the *DaemonHost* variable in *Contents/bin/spssprod.inf* inside the SPSS app bundle.  This information should have been read from the LSHOST variable in */tmp/installer.properties*, but experience with IBM's installer proves otherwise.
+      - The postinstall includes logic to properly set the *DaemonHost* variable in *Contents/bin/spssprod.inf* inside the SPSS app bundle.  This information should have been read from the LSHOST variable in */tmp/installer.properties*.  This is a documented bug<sup>2</sup>.
+      - The postinstall includes logic to remove *Contents/bin/lservrc* inside the SPSS app bundle, if present.  This file indicates a temporary license is being used.  It seems to be created by the silent installer by mistake, probably due to aforementioned bug.
       - It will contain an uninstall script for removing the version of IBM SPSS.  The *uninstall_method* is set to *uninstall_script*.
 
 Before You Begin
