@@ -11,16 +11,6 @@
 
 import os, xml, plistlib, subprocess, sys
 
-# General variables; edit to suit your needs:
-global ITEM_MUNKI_NAME,ITEM_MUNKI_DISP_NAME,ITEM_MUNKI_MIN_OS, ITEM_MUNKI_CATALOG_NAME, ITEM_MUNKI_DESCRIPTION, ITEM_MUNKI_DEVELOPER_NAME, ITEM_MUNKI_CATEGORY, ITEM_MUNKI_POSTINSTALL_SCRIPT_CONTENT_TEMPLATE
-ITEM_MUNKI_NAME = "IBM_SPSS"
-ITEM_MUNKI_DISP_NAME = "IBM SPSS"
-ITEM_MUNKI_MIN_OS = "10.10.5"
-ITEM_MUNKI_CATALOG_NAME = "software"
-ITEM_MUNKI_DEVELOPER_NAME = "IBM"
-ITEM_MUNKI_CATEGORY = "Math & Statistics"
-ITEM_MUNKI_DESCRIPTION = "Installs IBM SPSS configured to use the license server."
-
 # Script templates:
 # These are likely to require adjustment for each major IBM SPSS version.
 global ITEM_MUNKI_POSTINSTALL_SCRIPT_CONTENT_TEMPLATE
@@ -85,12 +75,13 @@ if [ -d "$parent_dir" ]; then
 fi
 '''
 
-global ITEMS_TO_COPY
+global ITEMS_TO_COPY, ITEMS_TO_COPY_SRC_ITEM
 ITEMS_TO_COPY = []
 COPY_ITEM = {'destination_path':"/private/tmp",
 'source_item':"replaced by create_pkginfo()",
 'destination_item':"SPSS_Statistics_Installer.bin"}
 ITEMS_TO_COPY.append(COPY_ITEM)
+ITEMS_TO_COPY_SRC_ITEM = "SPSS_Statistics_Installer.bin"
 
 global ITEM_MUNKI_INSTALLS_ARRAY
 ITEM_MUNKI_INSTALLS_ARRAY = []
@@ -123,7 +114,7 @@ def create_items_to_copy_cmds():
             args.append(dest_path_str)
     return args
 
-def create_pkginfo(given_app_version,given_app_munki_item_to_copy_source_item,given_app_munki_installs_path,given_repo_path_to_pkg,given_app_license_server,given_app_licensee,given_app_munki_update_for,given_app_requires):
+def create_pkginfo(given_app_version,given_app_munki_installs_path,given_repo_path_to_pkg,given_app_license_server,given_app_licensee,given_app_munki_update_for,given_app_requires):
     '''Makes the pkginfo for this item.'''
     # Paths:
     munki_repo_pkg_path = os.path.join(MUNKI_PKGS_PATH,given_repo_path_to_pkg)
@@ -144,7 +135,7 @@ def create_pkginfo(given_app_version,given_app_munki_item_to_copy_source_item,gi
            '--pkgvers=%s' % given_app_version,
            '--displayname=%s' % ITEM_MUNKI_DISP_NAME]
     # Update source item for "items to copy":
-    ITEMS_TO_COPY[0]['source_item'] = given_app_munki_item_to_copy_source_item
+    ITEMS_TO_COPY[0]['source_item'] = ITEMS_TO_COPY_SRC_ITEM
     # Make "items to copy" arg string:
     itc_args = create_items_to_copy_cmds()
     if not itc_args:
@@ -205,6 +196,16 @@ def main():
     MUNKI_PKGS_PATH = os.path.join(MUNKI_REPO_PATH,'pkgs')
     MUNKI_PKGSINFO_PATH = os.path.join(MUNKI_REPO_PATH,'pkgsinfo')
 
+    # General variables; edit to suit your needs:
+    global ITEM_MUNKI_NAME,ITEM_MUNKI_DISP_NAME,ITEM_MUNKI_MIN_OS, ITEM_MUNKI_CATALOG_NAME, ITEM_MUNKI_DESCRIPTION, ITEM_MUNKI_DEVELOPER_NAME, ITEM_MUNKI_CATEGORY, ITEM_MUNKI_POSTINSTALL_SCRIPT_CONTENT_TEMPLATE
+    ITEM_MUNKI_NAME = "IBM_SPSS"
+    ITEM_MUNKI_DISP_NAME = "IBM SPSS"
+    ITEM_MUNKI_MIN_OS = "10.10.5"
+    ITEM_MUNKI_CATALOG_NAME = "software"
+    ITEM_MUNKI_DEVELOPER_NAME = "IBM"
+    ITEM_MUNKI_CATEGORY = "Math & Statistics"
+    ITEM_MUNKI_DESCRIPTION = "Installs IBM SPSS configured to use the license server."
+
     # Gather item info:
     app_version = raw_input("SPSS version: ")
     app_munki_installs_path = raw_input("Path where app is installed (relative to client, should start with /Applications/IBM): ")
@@ -219,13 +220,14 @@ Is this version a fix patch for another version of SPSS?
     app_munki_update_for = raw_input("Update For: ").replace(' ','').replace('\n','')
     app_requires = raw_input("Munki name of Java JDK (requirement for SPSS): ")
 
-    # Determine item to copy. It is different for fix patches:
-    app_munki_item_to_copy_source_item = "SPSS_Statistics_Installer.bin"
+    # Differences for fix patches:
     if app_munki_update_for:
-        app_munki_item_to_copy_source_item = "SPSS_Statistics_Installer_Mac_Patch.bin"
+        ITEMS_TO_COPY_SRC_ITEM = "SPSS_Statistics_Installer_Mac_Patch.bin"
+        ITEM_MUNKI_NAME += "_Patch"
+        ITEM_MUNKI_DISP_NAME += " Fix Patch"
 
     # Generate pkginfo:
-    if not create_pkginfo(app_version,app_munki_item_to_copy_source_item,app_munki_installs_path,repo_path_to_pkg,app_license_server,app_licensee,app_munki_update_for,app_requires):
+    if not create_pkginfo(app_version,app_munki_installs_path,repo_path_to_pkg,app_license_server,app_licensee,app_munki_update_for,app_requires):
         print "Failed to create pkginfo."
         sys.exit(1)
     # All OK if here:
