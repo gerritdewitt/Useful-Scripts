@@ -37,7 +37,7 @@ Before You Begin
 Deployment Method
 ----------
 ## Install SPSS on a Test Mac ##
-1. Install SPSS on a test Mac system with the Munki tools installed.  For the test installation, you will need to make a sample *installer.properties* file.  Look at the example one provided in the IBM SPSS vendor disk image, or you can use the following as a template.  Refer to IBM's documentation if necessary<sup>2</sup>:
+1. Install SPSS on a test Mac system with the Munki tools installed.  For the test installation, you will need to make a sample *installer.properties* file.  Look at the example one provided in the IBM SPSS vendor disk image, or you can use the following as a template.  Refer to IBM's documentation if necessary<sup>2</sup>.  Due to a bug<sup>2</sup> in the SPSS installer, the software may be licensed as a trial.  That is OK for the test installation since all we care about is getting app metadata.
 <pre>INSTALLER_UI=silent
 LICENSE_ACCEPTED=true
 network=1
@@ -82,4 +82,5 @@ Sources
 2. SPSS
    - Example *pkginfo*: https://groups.google.com/forum/#!topic/munki-dev/qySQdMNEItU
    - Silent Install Notes: https://developer.ibm.com/predictiveanalytics/2016/03/22/silent-installation-of-release-ibm-spss-statistics-24-on-macintosh/
+   - APAR PI66924: http://www.ibm.com/support/entdocview.wss?uid=swg1PI66924
 3. *sed* Examples: http://stackoverflow.com/questions/16440377/sed-replace-whole-line-when-match-found
