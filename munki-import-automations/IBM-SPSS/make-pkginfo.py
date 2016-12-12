@@ -75,13 +75,12 @@ if [ -d "$parent_dir" ]; then
 fi
 '''
 
-global ITEMS_TO_COPY, ITEMS_TO_COPY_SRC_ITEM
+global ITEMS_TO_COPY
 ITEMS_TO_COPY = []
 COPY_ITEM = {'destination_path':"/private/tmp",
 'source_item':"replaced by create_pkginfo()",
 'destination_item':"SPSS_Statistics_Installer.bin"}
 ITEMS_TO_COPY.append(COPY_ITEM)
-ITEMS_TO_COPY_SRC_ITEM = "SPSS_Statistics_Installer.bin"
 
 global ITEM_MUNKI_INSTALLS_ARRAY
 ITEM_MUNKI_INSTALLS_ARRAY = []
@@ -205,6 +204,8 @@ def main():
     ITEM_MUNKI_DEVELOPER_NAME = "IBM"
     ITEM_MUNKI_CATEGORY = "Math & Statistics"
     ITEM_MUNKI_DESCRIPTION = "Installs IBM SPSS configured to use the license server."
+    global ITEMS_TO_COPY_SRC_ITEM
+    ITEMS_TO_COPY_SRC_ITEM = "SPSS_Statistics_Installer.bin"
 
     # Gather item info:
     app_version = raw_input("SPSS version: ")
