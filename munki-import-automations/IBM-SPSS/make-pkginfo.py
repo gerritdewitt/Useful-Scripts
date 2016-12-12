@@ -5,7 +5,7 @@
 # Documentation & References: See closest ReadMe.
 
 # Written by Gerrit DeWitt (gdewitt@gsu.edu)
-# 2015-08-24/28, 2015-09-11 (config profile and pkginfo creation), 2015-11-24 (conditions), 2015-11-25, 2015-12-07, 2016-03-21 (EndNote), 2016-07-28, 2016-08-30, 2016-10-03, 2016-11-09, 2016-11-14, 2016-11-29 (Autodesk), 2016-12-07, 2016-12-09.
+# 2015-08-24/28, 2015-09-11 (config profile and pkginfo creation), 2015-11-24 (conditions), 2015-11-25, 2015-12-07, 2016-03-21 (EndNote), 2016-07-28, 2016-08-30, 2016-10-03, 2016-11-09, 2016-11-14, 2016-11-29 (Autodesk), 2016-12-07, 2016-12-09, 2016-12-12.
 # Copyright Georgia State University.
 # This script uses publicly-documented methods known to those skilled in the art.
 
@@ -31,6 +31,8 @@ installer_license_file_path="/private/tmp/installer.properties"
 # Installed path for license info:
 spssprod_inf_file_path="__%app_munki_installs_path%__/Contents/bin/spssprod.inf"
 fixed_spssprod_inf_file_path="__%app_munki_installs_path%__/Contents/bin/spssprod.inf.fixed"
+# Extraneous license file:
+lservrc_file_path="__%app_munki_installs_path%__/Contents/bin/lservrc"
 
 installer_license_content="
 INSTALLER_UI=silent
@@ -56,6 +58,11 @@ if [ "$?" != "0" ]; then
     exit 1
 fi
 /bin/mv "$fixed_spssprod_inf_file_path" "$spssprod_inf_file_path"
+
+# Remove extraneous local license, if present:
+if [ -f "$lservrc_file_path" ]; then
+    /bin/rm "$lservrc_file_path"
+fi
 
 # Correct permissions:
 /usr/sbin/chown -R root:admin "/Applications/IBM"
