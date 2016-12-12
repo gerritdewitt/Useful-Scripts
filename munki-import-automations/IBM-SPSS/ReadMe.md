@@ -26,7 +26,8 @@ Historically, IBM has also provided a UI-driven VISE installer, but that is simp
       - If the version of SPSS is a fix patch, the *update_for* key will be set according to script input.
       - It will contain a postinstall script that writes */tmp/installer.properties* with the given license information.
       - The postinstall will call the bash archive and perform the installation, then clean up.
-      - The postinstall also includes logic to properly set the *DaemonHost* variable in *Contents/bin/spssprod.inf* inside the SPSS app bundle.  This information should have been read from the LSHOST variable in */tmp/installer.properties*, but experience with IBM's installer proves otherwise.
+      - The postinstall includes logic to properly set the *DaemonHost* variable in *Contents/bin/spssprod.inf* inside the SPSS app bundle.  This information should have been read from the LSHOST variable in */tmp/installer.properties*.  This is a documented bug<sup>2</sup>.
+      - The postinstall includes logic to remove *Contents/bin/lservrc* inside the SPSS app bundle, if present.  This file indicates a temporary license is being used.  It seems to be created by the silent installer by mistake, probably due to the aforementioned bug.
       - It will contain an uninstall script for removing the version of IBM SPSS.  The *uninstall_method* is set to *uninstall_script*.
 
 Before You Begin
@@ -37,7 +38,7 @@ Before You Begin
 Deployment Method
 ----------
 ## Install SPSS on a Test Mac ##
-1. Install SPSS on a test Mac system with the Munki tools installed.  For the test installation, you will need to make a sample *installer.properties* file.  Look at the example one provided in the IBM SPSS vendor disk image, or you can use the following as a template.  Refer to IBM's documentation if necessary<sup>2</sup>:
+1. Install SPSS on a test Mac system with the Munki tools installed.  For the test installation, you will need to make a sample *installer.properties* file.  Look at the example one provided in the IBM SPSS vendor disk image, or you can use the following as a template.  Refer to IBM's documentation if necessary<sup>2</sup>.  Due to a bug<sup>2</sup> in the SPSS installer, the software may be licensed as a trial.  That is OK for the test installation since all we care about is getting app metadata.
 <pre>INSTALLER_UI=silent
 LICENSE_ACCEPTED=true
 network=1
@@ -82,4 +83,5 @@ Sources
 2. SPSS
    - Example *pkginfo*: https://groups.google.com/forum/#!topic/munki-dev/qySQdMNEItU
    - Silent Install Notes: https://developer.ibm.com/predictiveanalytics/2016/03/22/silent-installation-of-release-ibm-spss-statistics-24-on-macintosh/
+   - APAR PI66924: http://www.ibm.com/support/entdocview.wss?uid=swg1PI66924
 3. *sed* Examples: http://stackoverflow.com/questions/16440377/sed-replace-whole-line-when-match-found
