@@ -41,7 +41,11 @@ Deployment Method
 
 2. Verify that the Agent is installed and working properly.  Other McAfee components should be delivered to the client computer after the Agent is able to communicate with its server.
 
-3. Determine the version of the installed Agent: how?
+3. Determine the version of the installed Agent by searching for the *Version* string in one or both of these files:
+   - **/etc/cma.d/EPOAGENT3700MACX/config.xml**
+   - <pre>cat /etc/cma.d/EPOAGENT3700MACX/config.xml | grep Version</pre>
+   - **/etc/ma.d/EPOAGENT3000/config.xml**
+   - <pre>cat /etc/ma.d/EPOAGENT3000/config.xml | grep Version</pre>
 
 ## Add McAfee Agent to the Repository ##
 1. Run the *make-pkg-and-pkginfo.py* script and follow its prompts to generate the disk image and *pkginfo* file.  For example:
