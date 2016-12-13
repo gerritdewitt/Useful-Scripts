@@ -49,7 +49,7 @@ Deployment Method
       - The path to the installer choice changes XML file.  The included *choice_changes-AutoCAD-2016.plist* file works for AutoCAD 2016.
 3. Update catalogs, and add the software to the appropriate manifest(s); for *example*:
    <pre>makecatalogs</pre>
-   <pre>manifestutil --add-pkg Autodesk_AutoCAD --section optional_installs --manifest common_optional_installs</pre>
+   <pre>manifestutil --add-pkg Autodesk_AutoCAD --section optional_installs --manifest some_manifest</pre>
 
 Author
 ----------
