@@ -38,7 +38,7 @@ Before You Begin
 Deployment Method
 ----------
 ## Install SPSS on a Test Mac ##
-1. Install SPSS on a test Mac system with the Munki tools installed.  For the test installation, you will need to make a sample *installer.properties* file.  Look at the example one provided in the IBM SPSS vendor disk image, or you can use the following as a template.  Refer to IBM's documentation if necessary<sup>2</sup>.  Due to a bug<sup>2</sup> in the SPSS installer, the software may be licensed as a trial.  That is OK for the test installation since all we care about is getting app metadata.
+1. Install SPSS on a test Mac system with the Munki tools installed.  For the test installation, you will need to make a sample *installer.properties* file.  Look at the example one provided in the IBM SPSS vendor disk image, or you can use the following as a template.  Refer to IBM's documentation if necessary.  Due to a bug in the SPSS installer, the software may be licensed as a trial.  That is OK for the test installation since all we care about is getting app metadata.<sup>2</sup>
 <pre>INSTALLER_UI=silent
 LICENSE_ACCEPTED=true
 network=1
