@@ -54,7 +54,7 @@ Deployment Method
       - The base path to the Munki repo, if that is not set as a shell environment variable
       - The version of the McAfee Agent
       - The path to the McAfee Agent bash archive, *install.sh*.  This item will be copied into a disk image, which will be copied to your Munki repository.
-3. Update catalogs, and add the software to the appropriate manifest(s); for *example*:
+2. Update catalogs, and add the software to the appropriate manifest(s); for *example*:
    <pre>makecatalogs</pre>
    <pre>manifestutil --add-pkg McAfee_Agent --section managed_installs --manifest some_manifest</pre>
 
