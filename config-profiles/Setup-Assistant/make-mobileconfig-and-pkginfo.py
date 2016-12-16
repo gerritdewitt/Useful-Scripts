@@ -47,8 +47,6 @@ def make_mobileconfig():
 
 def write_mobileconfig_and_add_to_repo(given_mobileconfig_dict):
     '''Writes the given mobileconfig to the working directory then imports it into munki.'''
-    
-    print "Working dir is %s." % THIS_DIR
     mobileconfig_file_path = os.path.join(MUNKI_PKGS_PATH,CONFIG_PROFILE_FILE_NAME)
     plistlib.writePlist(given_mobileconfig_dict,mobileconfig_file_path)
     print "Wrote mobileconfig to %s." % mobileconfig_file_path
@@ -87,9 +85,6 @@ def main():
     if not os.path.exists(MUNKI_PKGSINFO_PATH):
         print "Missing pkgsinfo dir at %s!" % MUNKI_PKGSINFO_PATH
         sys.exit(1)
-
-    global THIS_DIR
-    THIS_DIR = os.path.dirname(os.path.realpath(__file__))
 
     # Gather item info:
     global ORGANIZATION_ID_PREFIX
