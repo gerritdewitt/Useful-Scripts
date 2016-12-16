@@ -27,7 +27,7 @@ Deployment Method
 
 4. Update catalogs and add the profile to the appropriate manifest(s); for *example*:
 <pre>makecatalogs</pre>
-<pre>manifestutil --add-pkg Configuration_Setup_Assistant.mobileconfig --section managed_installs --manifest some_manifest</pre>
+<pre>manifestutil --add-pkg Configuration_Dock_name-identifier.mobileconfig --section managed_installs --manifest some_manifest</pre>
 
 Author
 ----------
