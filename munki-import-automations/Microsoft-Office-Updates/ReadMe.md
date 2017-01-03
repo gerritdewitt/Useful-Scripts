@@ -18,7 +18,7 @@ Microsoft uses Apple package (pkg) installers for its products; some are are dis
 2. We'll programmatically create a *pkginfo* file.  The *make-pkginfo.py* script serves this purpose.
    * The *make-pkginfo.py* script is interactive.  It can create pkginfo for Office 2016 updates (individual apps), Office 2011 suite updates, and other Microsoft app products.
    * Some notes about the resulting *pkginfo*:
-      - It will be a standard Apple installer pkg case, but will include an *installs* array since receipt data may be unreliable.<sup>1</sup>  Installs arrays are created automatically for Office update cases; for other cases, the script will request the path to the installed app.
+      - It will be a standard Apple installer pkg case, but will include an *installs* array since receipt data may be unreliable.<sup>3</sup>  Installs arrays are created automatically for Office update cases; for other cases, the script will request the path to the installed app.
       - If the item is an Office 2011 or 2016 update, the *update_for* key will be set.
 
 Before You Begin
@@ -76,4 +76,3 @@ Sources
 3. KMS Licensing & Office for Mac:
    - Munki and Office 2016: https://github.com/munki/munki/wiki/Munki%20And%20Office%202016
    - Fixing Microsoft Office 2011 SP2 Volume Licensing: http://blog.michael.kuron-germany.de/tag/com-microsoft-office-licensing/
-
