@@ -76,3 +76,4 @@ Sources
 3. KMS Licensing & Office for Mac:
    - Munki and Office 2016: https://github.com/munki/munki/wiki/Munki%20And%20Office%202016
    - Fixing Microsoft Office 2011 SP2 Volume Licensing: http://blog.michael.kuron-germany.de/tag/com-microsoft-office-licensing/
+

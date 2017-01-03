@@ -146,8 +146,9 @@ Is this Microsoft item one of the following?
 
     # Common to all:
     repo_path_to_pkg = raw_input("Path to the item in repo (relative to %s): " % MUNKI_PKGS_PATH)
-    due_date_interval_days = -1
-    due_date_interval_days = int(raw_input("Update due date in days (press return to skip): "))
+    due_date_interval_days = raw_input("Update due date in days (press return to skip): ").replace(' ','').replace('\n','')
+    if not due_date_interval_days:
+        due_date_interval_days = -1
     # Create pkginfo:
     if not create_pkginfo(item_munki_name,item_munki_display_name,item_munki_description,app_version,min_macos_version,item_munki_installs_paths,due_date_interval_days,repo_path_to_pkg,item_munki_update_for):
         print "Error creating pkginfo!"
