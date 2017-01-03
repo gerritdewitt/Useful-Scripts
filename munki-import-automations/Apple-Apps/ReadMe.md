@@ -107,7 +107,7 @@ The goal here is to verify that you have captured a valid installer package.
       - The display name (example: **Apple Keynote**)
       - The app version.  Use the version as displayed in the App Store.
       - The minimal version of macOS required by the app.  Refer to the notes Apple provides in the App Store.
-      - The path to the installed app relative to the client (example: **/Applications/Apple Pages.app**).
+      - The path to the installed app relative to the client (example: **/Applications/Keynote.app**).
       - The path to the captured installer package relative to the Munki repository's pkgs directory.
 3. Update catalogs, and add the software to the appropriate manifest(s).  You could use the conditional optional installs example given above.
 

@@ -65,7 +65,7 @@ COMPANYNAME=Your Organization
       - The licensee
       - If the SPSS installer is an update (“patch fix”), then you can make it an *update_for* by specifying the name of the Munki item that it updates.  For example, *IBM_SPSS_Update-24.0.0.1* is an “update_for” *IBM_SPSS-24.0.0.0*.
       - The Munki item name for an Oracle Java JDK (example: *Oracle_Java_JDK*).  SPSS requires a Java JDK.
-3. If the item is not an *update_for*, update catalogs, and add the software to the appropriate manifest(s); for *example*:
+3. Update catalogs.  Add the software to the appropriate manifest(s) if it is not an “update_for”; for *example*:
    <pre>makecatalogs</pre>
    <pre>manifestutil --add-pkg IBM_SPSS --section optional_installs --manifest some_manifest</pre>
 
