@@ -24,7 +24,7 @@ Deployment Method
       - Your organization's display name (example: *Some State University*)
       - A profile display name (example: *Dock Settings*)
       - A profile description (example: *From the IT Department*)
-
+      - Absolute path to the *com.apple.dock.plist* from which you are building the configuration profile (from step 2).
 4. Update catalogs and add the profile to the appropriate manifest(s); for *example*:
 <pre>makecatalogs</pre>
 <pre>manifestutil --add-pkg Configuration_Dock_name-identifier.mobileconfig --section managed_installs --manifest some_manifest</pre>
