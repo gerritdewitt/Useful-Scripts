@@ -12,8 +12,7 @@ MathWorks provides a means for performing a silent installation, serialization, 
 2. **Install the Installer Problem**: Creating the *pkginfo* for this item requires knowing about Munki's “copy from dmg” installation method, and a solid understanding of how Munki determines if something is installed.  Uninstallation must also be considered, since *remove_copied_items* makes no sense for an “install the installer” case.<sup>1</sup>
 
 ## Deployment Overview ##
-1. Downloaded the MathWorks MATLAB disk image (dmg).  Note that it's a read-write, uncompressed disk image, so it's not ideal for deployment until you convert it to read-only compresed.  You can do that easily via *hdiutil*:
-<pre>hdiutil convert -format UDZO -o MathWorks_MATLAB_2016B-9.1.0.dmg matlab_R2016b_maci64.dmg</pre>
+1. Downloaded the MathWorks MATLAB disk image (dmg).  Note that it's a read-write, uncompressed disk image, so it's not ideal for deployment until you convert it to read-only compresed.
 2. Copy the read-only, compressed MathWorks MATLAB disk image (dmg) to the Munki repository.
 3. We'll programmatically create a *pkginfo* file for the “pkg” (the disk image containing the MathWorks installer).  The *make-pkginfo.py* script serves this purpose.
    * The *make-pkginfo.py* script will request information about the version and installed path for MathWorks MATLAB.
@@ -44,8 +43,10 @@ Deployment Method
    * Look for the bundle version (*CFBundleVersion*).  This is the version number that the *make-pkginfo.py* script will request.
 
 ## Add MATLAB to the Repository ##
-1. Copy the MathWorks MATLAB disk image to the munki repository.  Use a good naming convention; for example: *MathWorks_MATLAB-version.dmg*, where *version* is the *CFBundleVersion* number determined when you installed it on a test Mac.
-2. Run the *make-pkginfo.py* script and follow its prompts to generate the *pkginfo* file.  For example:
+1. Create a read-only, compressed version of the MathWorks disk image by using Disk Utility or *hdiutil*; as shown below.  Use a good naming convention; for example: *MathWorks_MATLAB-version.dmg*, where *version* is the *CFBundleVersion* number determined when you installed it on a test Mac.
+<pre>hdiutil convert -format UDZO -o MathWorks_MATLAB_2016B-9.1.0.dmg matlab_R2016b_maci64.dmg</pre>
+2. Copy the read-only, compressed version MathWorks MATLAB disk image to the munki repository.
+3. Run the *make-pkginfo.py* script and follow its prompts to generate the *pkginfo* file.  For example:
    <pre>./make-pkginfo.py</pre>
    * The script is interactive.  It will ask for:
       - The base path to the Munki repo, if that is not set as a shell environment variable
@@ -54,7 +55,7 @@ Deployment Method
       - The path to the MATLAB disk image relative to the Munki repository's *pkgs* directory
       - The MATLAB file installation key
       - The license file string
-3. Update catalogs.  Add the software to the appropriate manifest(s) if it is not an “update_for”; for *example*:
+4. Update catalogs.  Add the software to the appropriate manifest(s) if it is not an “update_for”; for *example*:
    <pre>makecatalogs</pre>
    <pre>manifestutil --add-pkg MathWorks_MATLAB --section optional_installs --manifest some_manifest</pre>
 
