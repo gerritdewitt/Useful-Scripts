@@ -220,11 +220,6 @@ License File String:
    - Example: SERVER server.host.name AABB11223344 27000
 '''
     app_license_string = raw_input("License File String: ")
-    print '''
-Is this version an update for another version of MATLAB?
-   - If not a patch, simply press return.
-   - If a patch, provide the name key of the parent MATLAB it patches.
-'''
 
     # Generate pkginfo:
     if not create_pkginfo(app_version,app_munki_installs_path,repo_path_to_pkg,app_file_installation_key,app_license_string):
