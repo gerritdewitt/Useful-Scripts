@@ -55,7 +55,7 @@ Deployment Method
       - The path to the MATLAB disk image relative to the Munki repository's *pkgs* directory
       - The MATLAB file installation key
       - The license file string
-4. Update catalogs.  Add the software to the appropriate manifest(s) if it is not an “update_for”; for *example*:
+4. Update catalogs.  Add the software to the appropriate manifest(s); for *example*:
    <pre>makecatalogs</pre>
    <pre>manifestutil --add-pkg MathWorks_MATLAB --section optional_installs --manifest some_manifest</pre>
 
