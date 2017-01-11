@@ -7,7 +7,7 @@
 # Written by Gerrit DeWitt (gdewitt@gsu.edu)
 # 2015-08-24/28, 2015-09-11 (config profile and pkginfo creation), 2015-09-15, 2015-09-30 (first pass at Matlab postinstall scripts)
 # 2015-11-24 (conditions), 2015-11-25, 2015-12-07, 2016-03-21 (EndNote), 2016-07-28, 2016-08-30, 2016-10-03, 2016-11-09, 2016-11-14
-# 2016-11-29 (Autodesk), 2016-12-07, 2016-12-09, 2016-12-12 (SPSS), 2017-01-05/09.
+# 2016-11-29 (Autodesk), 2016-12-07, 2016-12-09, 2016-12-12 (SPSS), 2017-01-05/09/11.
 # Copyright Georgia State University.
 # This script uses publicly-documented methods known to those skilled in the art.
 
@@ -17,7 +17,8 @@ import os, xml, plistlib, subprocess, sys
 # These are likely to require adjustment for each major MATLAB version.
 global ITEM_MUNKI_POSTINSTALL_SCRIPT_CONTENT_TEMPLATE
 ITEM_MUNKI_POSTINSTALL_SCRIPT_CONTENT_TEMPLATE = '''#!/bin/bash
-installer_bin="/private/tmp/InstallForMacOSX.app/Contents/MacOS/InstallForMacOSX"
+installer_app="/private/tmp/InstallForMacOSX.app"
+installer_bin="$installer_app/Contents/MacOS/InstallForMacOSX"
 
 # Files used by installer:
 installer_input_file_path="/private/tmp/matlab_installer_input.txt"
@@ -53,8 +54,8 @@ licenseFile=$network_license_path
 "$installer_bin" -inputFile "$installer_input_file_path"
 
 # Clean up:
-if [ -f "$installer_bin" ]; then
-    /bin/rm "$installer_bin"
+if [ -d "$installer_app" ]; then
+    /bin/rm -fr "$installer_app"
 fi
 if [ -f "$installer_input_file_path" ]; then
     /bin/rm "$installer_input_file_path"
