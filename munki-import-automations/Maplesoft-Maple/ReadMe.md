@@ -17,7 +17,7 @@ Maplesoft provides a means for performing a silent installation, serialization, 
       - This information should be obtained by installing Maple on a test Mac first.
    * The *make-pkginfo.py* script will request license information and other relevant details.
    * Some notes about the resulting pkginfo:
-      - The resulting pkginfo will be a “copy from dmg” case with an *installs* array that differs from the *items_to_copy* array.  This *installs* array will be populated with the path to the Maple app - the “end state.”  This array **won't** hold any path information for the *items_to_copy* (the “silent installer” bash archive in this case).  Recall that Munki relies on the *installs* array when determining if something has been installed already.<sup>1</sup>
+      - The resulting pkginfo will be a “copy from dmg” case with an *installs* array that differs from the *items_to_copy* array.  This *installs* array will be populated with the path to the Maple app - the “end state.”  This array **won't** hold any path information for the *items_to_copy* (the vendor's installer).  Recall that Munki relies on the *installs* array when determining if something has been installed already.<sup>1</sup>
       - It will contain a postinstall script that writes */tmp/maple_installer.properties* with the given license information.
       - The postinstall will call the vendor's custom installer app to perform the installation, then clean up.
       - It will contain an uninstall script for removing the version of Maple.  The *uninstall_method* is set to *uninstall_script*.
