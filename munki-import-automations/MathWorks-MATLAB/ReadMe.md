@@ -12,7 +12,7 @@ MathWorks provides a means for performing a silent installation, serialization, 
 2. **Install the Installer Problem**: Creating the *pkginfo* for this item requires knowing about Munki's “copy from dmg” installation method, and a solid understanding of how Munki determines if something is installed.  Uninstallation must also be considered, since *remove_copied_items* makes no sense for an “install the installer” case.<sup>1</sup>
 
 ## Deployment Overview ##
-1. Downloaded the MathWorks MATLAB disk image (dmg).  Note that it's a read-write, uncompressed disk image, so it's not ideal for deployment until you convert it to read-only compresed.
+1. Download the MathWorks MATLAB disk image (dmg).  Note that it's a read-write, uncompressed disk image, so it's not ideal for deployment until you convert it to read-only compresed.
 2. Copy the read-only, compressed MathWorks MATLAB disk image (dmg) to the Munki repository.
 3. We'll programmatically create a *pkginfo* file for the “pkg” (the disk image containing the MathWorks installer).  The *make-pkginfo.py* script serves this purpose.
    * The *make-pkginfo.py* script will request information about the version and installed path for MathWorks MATLAB.
