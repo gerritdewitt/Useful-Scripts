@@ -41,12 +41,11 @@ The configuration profile needs only be created and added to your Munki reposito
       - A short name, without spaces, to identify the picture. (example: *Math_Labs*)
       - A display name (example: *Math Labs*)
       - A version for the configuration profile (example: *2017.01*)
-
-The short name, display name, and version will be used like this:
-   * The short name and version are used for the disk image and *pkginfo* names:
-      - The “pkg” name for our example would be: *Desktop_Picture_Math_Labs-2017.01.dmg*
-      - The *pkginfo* for our example would be: *Desktop_Picture_Math_Labs-2017.01*
-   * The display name is used in the *pkginfo*; for example, if you specify *Math Labs*, the display name will be *Desktop Picture (Math Labs)*.
+   * The short name, display name, and version will be used like this:
+      - The short name and version are used for the disk image and *pkginfo* names:
+         - The “pkg” name for our example would be: *Desktop_Picture_Math_Labs-2017.01.dmg*
+         - The *pkginfo* for our example would be: *Desktop_Picture_Math_Labs-2017.01*
+      - The display name is used in the *pkginfo*; for example, if you specify *Math Labs*, the display name will be *Desktop Picture (Math Labs)*.
 
 3. Update catalogs and add the managed desktop picture to the appropriate manifest(s); for *example*:
 <pre>makecatalogs</pre>
