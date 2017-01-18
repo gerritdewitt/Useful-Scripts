@@ -8,8 +8,6 @@ The *make-mobileconfig-and-pkginfo.py* script generates an Apple configuration p
 
 The resulting configuration profile can be used to set many different desktop pictures, so long as you deploy what you want to */Library/Desktop Pictures/Managed Desktop Picture.png*
 
-(Note about the other script forthcoming)
-
 Before You Begin
 ----------
 * Review and modify the *make-mobileconfig-and-pkginfo.py* script as necessary for your environment.  The script is easy to read, and there are some global variables that control names, descriptions, and other product metadata.
