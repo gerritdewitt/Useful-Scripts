@@ -2,11 +2,16 @@ The GPL license, referenced below, applies to the code for the Useful Scripts (a
 written by Gerrit DeWitt for Georgia State University.
 
 This project makes use of existing open-source and publicly-documented know-how
-(collectively, "the existing items").
-
-Refer to the various ReadMe.md files for references.
+(collectively, "the existing items").  Refer to the various ReadMe.md files for references.
 Where practical, we have documented sources for know-how except for when generally
 known to those skilled in the art or otherwise in the public domain.
+
+We believe the existing items are either:
+   - licensed to the public in a manner consistent with the creation of a derivative
+work which can be licensed under the terms of the GPL, or
+   - that they are simply facts and information, which are not copyrightable.
+
+This license in no way restricts your rights to the existing items.
 
 GPL LICENSE
 
