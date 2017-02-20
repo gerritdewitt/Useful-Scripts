@@ -1,0 +1,24 @@
+#!/bin/sh
+
+#  preinstall
+#  GSU WebEx MC preinstall
+#  Removes files from prior installs, if present.
+
+# Written by Gerrit DeWitt (gdewitt@gsu.edu)
+# 2016-05-11, 2016-06-06, 2016-07-11.
+# Copyright Georgia State University.
+# This script uses publicly-documented methods known to those skilled in the art.
+# References: See top level ReadMe.md.
+
+declare -x PATH="/usr/bin:/bin:/usr/sbin:/sbin"
+
+declare -x WEBEX_PLUGIN_PATH="$3/Library/Internet Plug-Ins/WebEx64.plugin"
+declare -x WEBEX_APP_SUP_DIR="$3/Library/Application Support/WebEx Folder"
+
+if [ -d "$WEBEX_PLUGIN_PATH" ]; then
+    rm -fr "$WEBEX_PLUGIN_PATH"
+fi
+
+if [ -d "$WEBEX_APP_SUP_DIR" ]; then
+    rm -fr "$WEBEX_APP_SUP_DIR"
+fi
