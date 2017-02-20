@@ -57,7 +57,7 @@ read LOGO_FILE_PATH
 echo "Enter a version number (for example YYYY.MM like 2016.07):"
 read PACKAGE_VERSION
 
-echo "Enter an identifier for the Apple pkg (example: edu.someuniversity.alertus.panicbutton):"
+echo "Enter an identifier for the Apple pkg (example: edu.someuniversity.alertus.desktop):"
 read PACKAGE_IDENTIFIER
 
 PACKAGE_PATH="$THIS_DIR/Alertus_Desktop-$PACKAGE_VERSION.pkg"
