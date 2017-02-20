@@ -1,0 +1,35 @@
+#!/bin/sh
+
+#  preinstall
+#  GSU Alertus Desktop preinstall
+#  Programmatically kills the Alertus Desktop app iff:
+#   (a) the target disk is the boot volume
+#   (b) someone has an Aqua session
+
+# Written by Gerrit DeWitt (gdewitt@gsu.edu)
+# 2016-05-11, 2016-06-06.
+# Copyright Georgia State University.
+# This script uses publicly-documented methods known to those skilled in the art.
+# References: Alertus Technologies uses a similar technique in its own pre/post
+# package scripts.
+# man who: https://developer.apple.com/legacy/library/documentation/Darwin/Reference/ManPages/man1/who.1.html
+# awk examples: http://www.tutorialspoint.com/awk/awk_basic_examples.htm
+# launchctl as user: https://derflounder.wordpress.com/2016/03/25/running-processes-in-os-x-as-the-logged-in-user-from-outside-the-users-account/
+# example: https://lists.macosforge.org/pipermail/launchd-dev/2015-July/001139.html
+
+declare -x PATH="/usr/bin:/bin:/usr/sbin:/sbin"
+
+# MARK: VARIABLES
+declare -x APP_NAME="Alertus Desktop"
+declare -x AQUA_SESSION_USER=$(who | grep "console" | awk '{print $1}')
+declare -x AQUA_SESSION_USER_ID=$(id -u "$AQUA_SESSION_USER")
+declare -x LOG_PREFIX="GSU Alertus Desktop preinstall"
+declare -x FAILURE_MSG="$LOG_PREFIX: Could not quit the app; it may not have been open."
+
+if [ "$3" == "/" ]; then
+    echo "$LOG_PREFIX: Operating on boot volume."
+    if ([ "$AQUA_SESSION_USER" != "" ] && [ "$AQUA_SESSION_USER_ID" != "0" ]); then
+        echo "$LOG_PREFIX: Attempting to quit $APP_NAME for $AQUA_SESSION_USER."
+        /bin/launchctl asuser $AQUA_SESSION_USER_ID killall "$APP_NAME" || echo "$FAILURE_MSG"
+    fi
+fi

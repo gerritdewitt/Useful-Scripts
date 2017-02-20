@@ -1,0 +1,59 @@
+#!/bin/sh
+
+#  postinstall
+#  GSU Alertus Desktop postinstall
+#  Creates an empty app ID file file and sets permissions on it.
+#  Programmatically opens the Alertus Desktop app iff:
+#   (a) the target disk is the boot volume
+#   (b) the app is present in the filesystem
+#   (c) someone has an Aqua session
+
+# Written by Gerrit DeWitt (gdewitt@gsu.edu)
+# 2016-05-11, 2016-06-06.
+# Copyright Georgia State University.
+# This script uses publicly-documented methods known to those skilled in the art.
+# References: Alertus Technologies uses a similar technique in its own pre/post
+# package scripts.
+# man who: https://developer.apple.com/legacy/library/documentation/Darwin/Reference/ManPages/man1/who.1.html
+# awk examples: http://www.tutorialspoint.com/awk/awk_basic_examples.htm
+# launchctl as user: https://derflounder.wordpress.com/2016/03/25/running-processes-in-os-x-as-the-logged-in-user-from-outside-the-users-account/
+# example: https://lists.macosforge.org/pipermail/launchd-dev/2015-July/001139.html
+
+declare -x PATH="/usr/bin:/bin:/usr/sbin:/sbin"
+
+# MARK: VARIABLES
+
+declare -x ALERTUS_APP="$3/Applications/Alertus Desktop.app"
+declare -x ALERTUS_APP_SUPPORT_PATH="$3/Library/Application Support/Alertus Technologies"
+declare -x ALERTUS_APP_ID_FILE="$ALERTUS_APP_SUPPORT_PATH/Desktop Alert/aapid"
+declare -x AQUA_SESSION_USER=$(who | grep "console" | awk '{print $1}')
+declare -x AQUA_SESSION_USER_ID=$(id -u "$AQUA_SESSION_USER")
+declare -x LOG_PREFIX="GSU Alertus Desktop postinstall"
+declare -x FAILURE_MSG="$LOG_PREFIX: Could not open the Alertus Desktop app."
+
+# Permissions on App Support folders:
+chown -R root:wheel "$ALERTUS_APP_SUPPORT_PATH"
+chmod -R 0755 "$ALERTUS_APP_SUPPORT_PATH"
+find "$ALERTUS_APP_SUPPORT_PATH" -type f -exec chmod 0644 {} \;
+
+# Check for existing aapid:
+if [ -f "$ALERTUS_APP_ID_FILE" ]; then
+    rm "$ALERTUS_APP_ID_FILE"
+fi
+
+# Write aapid:
+echo "$LOG_PREFIX: Creating empty app ID file."
+echo " " > "$ALERTUS_APP_ID_FILE" || echo "$LOG_PREFIX: Problem creating empty app ID file."
+chmod +ai "everyone allow write,append" "$ALERTUS_APP_ID_FILE" || echo "$LOG_PREFIX: Problem setting ACL permissions on app ID file."
+chown root:wheel "$ALERTUS_APP_ID_FILE" || echo "$LOG_PREFIX: Problem setting owner/group on app ID file."
+
+if [ "$3" == "/" ]; then
+    echo "$LOG_PREFIX: Operating on boot volume."
+    if [ -d "$ALERTUS_APP" ]; then
+        echo "$LOG_PREFIX: App present."
+        if ([ "$AQUA_SESSION_USER" != "" ] && [ "$AQUA_SESSION_USER_ID" != "0" ]); then
+            echo "$LOG_PREFIX: Attempting to open $ALERTUS_APP as $AQUA_SESSION_USER."
+            /bin/launchctl asuser $AQUA_SESSION_USER_ID open "$ALERTUS_APP" || echo "$FAILURE_MSG"
+        fi
+    fi
+fi
