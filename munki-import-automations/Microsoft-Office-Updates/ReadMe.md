@@ -47,7 +47,7 @@ As an example, you can ask Munki the version number of an installed Office app b
       - **standalone**: for adding something else, like Skype, Lync, or AutoUpdate
    * It will ask for other details, depending on the type selection:
       - If you selected an Office 2016 update, the script requests the name of the app (example: **Word**)
-      - If adding a standalone app, the script requests the name (example: **Microsoft_Lync**) and display name (example: **Microsoft Lync**) of the item.
+      - If adding a standalone app, the script requests the name (example: **Microsoft_Skype_For_Business**) and display name (example: **Microsoft Skype for Business**) of the item.
       - The app or update version
       - The minimal version of macOS required by the app.  Refer to Microsoft release notes.
       - If adding a standalone app, the script requests the path to the installed app relative to the client (example: **/Applications/Skype for Business.app**).
