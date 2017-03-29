@@ -40,7 +40,7 @@ As an example, you can ask Munki the version number of an installed Office app b
 2. Run the *make-pkginfo.py* script and follow its prompts to generate the *pkginfo* file.  For example:
    <pre>./make-pkginfo.py</pre>
    * The script is interactive.  It will first request the base path to the Munki repo, if that is not set as a shell environment variable.
-   * It will ask what type of Microsoft item you're adding.  Choices are:  
+   * It will ask what type of Microsoft item you're adding.  Choices are:  
       - **2016**: for adding an update for an Office 2016 app pkg
       - **2011**: for adding an update for the Office 2011 suite
       - **mau**: for adding the Microsoft AutoUpdate app
