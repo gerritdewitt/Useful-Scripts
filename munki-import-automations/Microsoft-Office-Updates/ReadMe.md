@@ -49,12 +49,12 @@ As an example, you can ask Munki the version number of an installed Office app b
       - **standalone**: for adding something else, like Skype for Business or Teams
    * It will request the path to the item's pkg or disk image relative to the Munki repository's *pkgs* directory.
    * It will ask for other details, depending on the type selection:
-         - If you selected an Office 2016 update, the script requests the name of the app (example: **Word**)
-         - If adding a standalone app, the script requests the name (example: **Microsoft_Teams**) and display name (example: **Microsoft Teams**) of the item.
-         - The app or update version (except for Silverlight, where it determines the version from the pkg)
-         - The minimal version of macOS required by the app, if standalone.  Refer to Microsoft release notes.  Version 10.9 is set as the minimum for other items; 10.10 for Office 2016.
-         - If adding a standalone app, the script requests the path to the installed app relative to the client (example: **/Applications/Microsoft Teams.app**).
-         - Optionally, a due date for the item, in days measured from when the *pkginfo* is created (now).
+      - If you selected an Office 2016 update, the script requests the name of the app (example: **Word**)
+      - If adding a standalone app, the script requests the name (example: **Microsoft_Teams**) and display name (example: **Microsoft Teams**) of the item.
+      - The app or update version (except for Silverlight, where it determines the version from the pkg)
+      - The minimal version of macOS required by the app, if standalone.  Refer to Microsoft release notes.  Version 10.9 is set as the minimum for other items; 10.10 for Office 2016.
+      - If adding a standalone app, the script requests the path to the installed app relative to the client (example: **/Applications/Microsoft Teams.app**).
+      - Optionally, a due date for the item, in days measured from when the *pkginfo* is created (now).
 3. Update catalogs, and add the software to the appropriate manifest(s).  Here are some *examples*:
    <pre>makecatalogs</pre>
    * A mandatory update:
