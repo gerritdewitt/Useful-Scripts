@@ -3,8 +3,9 @@ Deploying Microsoft Apps with Munki
 Scripts and notes for deploying various Microsoft apps and updates via Munki, including:
 * Office 2016 Updates
 * Office 2011 Updates
-* Skype for Business or Lync
 * AutoUpdate
+* Silverlight plug-in
+* Standalone apps, like Skype for Business or Teams
 
 ## Challenges to Deployment ##
 Microsoft uses Apple package (pkg) installers for its products; some are are distributed as packages wrapped in disk image (dmg) files.  Munki can handle both correctly.
@@ -40,25 +41,26 @@ As an example, you can ask Munki the version number of an installed Office app b
 2. Run the *make-pkginfo.py* script and follow its prompts to generate the *pkginfo* file.  For example:
    <pre>./make-pkginfo.py</pre>
    * The script is interactive.  It will first request the base path to the Munki repo, if that is not set as a shell environment variable.
-   * It will ask what type of Microsoft item you're adding.  Choices are:  
+   * It will ask what type of Microsoft item you're adding.  Choices are:
       - **2016**: for adding an update for an Office 2016 app pkg
       - **2011**: for adding an update for the Office 2011 suite
       - **mau**: for adding the Microsoft AutoUpdate app
-      - **standalone**: for adding something else, like Skype, Lync, or AutoUpdate
+      - **silverlight**: for the web plug-in
+      - **standalone**: for adding something else, like Skype for Business or Teams
+   * It will request the path to the item's pkg or disk image relative to the Munki repository's *pkgs* directory.
    * It will ask for other details, depending on the type selection:
-      - If you selected an Office 2016 update, the script requests the name of the app (example: **Word**)
-      - If adding a standalone app, the script requests the name (example: **Microsoft_Skype_For_Business**) and display name (example: **Microsoft Skype for Business**) of the item.
-      - The app or update version
-      - The minimal version of macOS required by the app.  Refer to Microsoft release notes.
-      - If adding a standalone app, the script requests the path to the installed app relative to the client (example: **/Applications/Skype for Business.app**).
-      - The path to the item's pkg or disk image relative to the Munki repository's *pkgs* directory
-      - Optionally, a due date for the item, in days measured from when the *pkginfo* is created (now).
+         - If you selected an Office 2016 update, the script requests the name of the app (example: **Word**)
+         - If adding a standalone app, the script requests the name (example: **Microsoft_Teams**) and display name (example: **Microsoft Teams**) of the item.
+         - The app or update version (except for Silverlight, where it determines the version from the pkg)
+         - The minimal version of macOS required by the app, if standalone.  Refer to Microsoft release notes.  Version 10.9 is set as the minimum for other items; 10.10 for Office 2016.
+         - If adding a standalone app, the script requests the path to the installed app relative to the client (example: **/Applications/Microsoft Teams.app**).
+         - Optionally, a due date for the item, in days measured from when the *pkginfo* is created (now).
 3. Update catalogs, and add the software to the appropriate manifest(s).  Here are some *examples*:
    <pre>makecatalogs</pre>
    * A mandatory update:
    <pre>manifestutil --add-pkg Microsoft_Office_2011_Update --section managed_updates --manifest includes/common-managed_updates</pre>
    * An optional offering:
-   <pre>manifestutil --add-pkg Microsoft_Skype_For_Business --section optional_installs --manifest includes/common-optional_installs</pre>
+   <pre>manifestutil --add-pkg Microsoft_Teams --section optional_installs --manifest includes/common-optional_installs</pre>
 
 Author
 ----------
