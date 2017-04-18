@@ -7,6 +7,7 @@
 
 # Written by Gerrit DeWitt (gdewitt@gsu.edu)
 # This file created 2015-08-24/28, 2015-09-11, 2015-11-17, 2015-11-23, 2016-02-08, 2016-10-13, 2016-11-14, 2016-11-29, 2016-12-05.
+# 2017-04-18.
 # Copyright Georgia State University.
 # This script uses publicly-documented methods known to those skilled in the art.
 
@@ -22,8 +23,10 @@ global ITEM_MUNKI_HW_BUNDLE_DESCRIPTION, ITEM_MUNKI_PREINSTALL_SCRIPT_CONTENT_TE
 ITEM_MUNKI_HW_BUNDLE_DESCRIPTION = "__%APP%__ is available to Mac systems with a hardware bundle license for it.  Generally, this should be all Mac computers shipping on or after its release on October 23, 2013.  It may also be deployed to systems for which a VPP license was purchased."
 ITEM_MUNKI_PREINSTALL_SCRIPT_CONTENT_TEMPLATE = '''#!/bin/bash
 suffix="$(/bin/date +%h%m%s)"
+lsregister="/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/LaunchServices.framework/Versions/A/Support/lsregister"
 if [ -d "__%APP_PATH%__" ]; then
    mv "__%APP_PATH%__" "/private/tmp/__%APP%__-${suffix}"
+   "$lsregister" -kill -r -domain local -domain user
 fi
 '''
 

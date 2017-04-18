@@ -129,3 +129,4 @@ Sources
    - http://pivotallabs.com/accessing-the-packages-that-underlie-apple-s-app-store/
    - https://jonbrown.org/blog/10-9-deploying-appstore-packages/
    - https://derflounder.wordpress.com/2013/08/22/downloading-apples-server-app-installer-package/
+5. Use of *lsregister*:  https://sixcolors.com/post/2015/10/clean-out-a-messy-open-with-menu-in-the-finder/
