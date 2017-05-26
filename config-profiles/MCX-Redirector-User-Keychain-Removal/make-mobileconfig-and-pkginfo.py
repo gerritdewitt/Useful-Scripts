@@ -16,7 +16,7 @@
 # Copyright Georgia State University.
 # This script uses publicly-documented methods known to those skilled in the art.
 
-import os, uuid, plistlib, sys
+import os, uuid, plistlib, subprocess, sys
 
 def make_mobileconfig():
     '''Generates a configuration profile with MCX, etc.'''
