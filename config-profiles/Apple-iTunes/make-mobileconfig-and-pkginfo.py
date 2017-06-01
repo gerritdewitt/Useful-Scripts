@@ -7,7 +7,6 @@
 # creates the pkginfo.
 # Documentation & References: See closest ReadMe.md
 
-
 # Written by Gerrit DeWitt (gdewitt@gsu.edu)
 # This file created 2015-08-24/28, 2015-12-17, 2016-06-02, 2016-08-08, 2017-06-01.
 # Copyright Georgia State University.
