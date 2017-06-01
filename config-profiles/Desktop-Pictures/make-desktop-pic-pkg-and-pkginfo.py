@@ -201,7 +201,7 @@ Please specify the path to a PNG image to use as a managed desktop picture.
     # Request version:
     ITEM_MUNKI_VERSION = raw_input("Version for this managed desktop picture (example: 2016.10): ")
     # Request name of the configuration profile that will set this desktop picture:
-    ITEM_MUNKI_REQUIRES = raw_input("Munki name of the configuration profile used to set managed desktop pictures: ")
+    ITEM_MUNKI_REQUIRES = raw_input("Munki name of the configuration profile used to set managed desktop pictures (example: Configuration_Desktop_Picture_Managed.mobileconfig): ")
 
     # Generate disk image and copy it to the munki repo:
     generated_dmg_path = generate_dmg(picture_file_source_path)

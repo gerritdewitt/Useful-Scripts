@@ -29,6 +29,7 @@ The configuration profile needs only be created and added to your Munki reposito
       - Your organization's display name (example: *Some State University*)
       - A profile display name (example: *Managed Desktop Picture*)
       - A profile description (example: *From the IT Department*)
+   * The name of the configuration profile created is *Configuration_Desktop_Picture_Managed.mobileconfig*.
 
 ## Creating Managed Desktop Pictures ##
 1. Convert your desktop picture to PNG format if required.  Use Preview, Photoshop, sips, etc. to convert it.  (macOS supports various image formats, but for the sake of simplicity, we chose to fix the format to PNG and the installed path to */Library/Desktop Pictures/Managed Desktop Picture.png*.)
@@ -40,7 +41,8 @@ The configuration profile needs only be created and added to your Munki reposito
       - The full path to the PNG image you want to use as the managed desktop picture. (Do not escape spaces, etc. in the path.)
       - A short name, without spaces, to identify the picture. (example: *Math_Labs*)
       - A display name (example: *Math Labs*)
-      - A version for the configuration profile (example: *2017.01*)
+      - A version for the managed desktop picture (example: *2017.01*)
+      - The name of the configuration profile that will set the desktop picture (*Configuration_Desktop_Picture_Managed.mobileconfig* is the name of the profile created above).
    * The short name, display name, and version will be used like this:
       - The short name and version are used for the disk image and *pkginfo* names:
          - The “pkg” name for our example would be: *Desktop_Picture_Math_Labs-2017.01.dmg*
