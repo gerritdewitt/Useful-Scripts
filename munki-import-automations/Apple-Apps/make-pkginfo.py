@@ -7,7 +7,7 @@
 
 # Written by Gerrit DeWitt (gdewitt@gsu.edu)
 # This file created 2015-08-24/28, 2015-09-11, 2015-11-17, 2015-11-23, 2016-02-08, 2016-10-13, 2016-11-14, 2016-11-29, 2016-12-05.
-# 2017-04-18.
+# 2017-04-18, 2017-06-06.
 # Copyright Georgia State University.
 # This script uses publicly-documented methods known to those skilled in the art.
 
@@ -105,7 +105,7 @@ def main():
     app_munki_pkg_display_name = raw_input("Package display name: ")
     app_version = raw_input("App (package) version: ")
     min_macos_version = raw_input("Minimal macOS version required for this app: ")
-    app_munki_installs_path = raw_input("Path where app is installed (relative to client): ")
+    app_munki_installs_path = raw_input("Path where app is installed (relative to client): ").replace("\\","")
     repo_path_to_pkg = raw_input("Path to the item in repo (relative to %s): " % MUNKI_PKGS_PATH)
     # Generate pkginfo:
     if not create_pkginfo(app_munki_pkg_name,app_munki_pkg_display_name,app_version,min_macos_version,app_munki_installs_path,repo_path_to_pkg):
