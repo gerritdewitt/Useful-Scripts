@@ -5,7 +5,7 @@
 # Documentation & References: See closest ReadMe.
 
 # Written by Gerrit DeWitt (gdewitt@gsu.edu)
-# 2015-08-24/28, 2015-09-11 (config profile and pkginfo creation), 2015-11-24 (conditions), 2015-11-25, 2015-12-07, 2016-03-21 (EndNote), 2016-07-28, 2016-08-30, 2016-10-03, 2016-11-09, 2016-11-14, 2016-11-29 (Autodesk), 2016-12-07, 2016-12-09, 2016-12-12.
+# 2015-08-24/28, 2015-09-11 (config profile and pkginfo creation), 2015-11-24 (conditions), 2015-11-25, 2015-12-07, 2016-03-21 (EndNote), 2016-07-28, 2016-08-30, 2016-10-03, 2016-11-09, 2016-11-14, 2016-11-29 (Autodesk), 2016-12-07, 2016-12-09, 2016-12-12, 2017-06-06.
 # Copyright Georgia State University.
 # This script uses publicly-documented methods known to those skilled in the art.
 
@@ -209,7 +209,7 @@ def main():
 
     # Gather item info:
     app_version = raw_input("SPSS version: ")
-    app_munki_installs_path = raw_input("Path where app is installed (relative to client, should start with /Applications/IBM): ")
+    app_munki_installs_path = raw_input("Path where app is installed (relative to client, should start with /Applications/IBM): ").replace("\\","")
     repo_path_to_pkg = raw_input("Path to the item in repo (relative to %s): " % MUNKI_PKGS_PATH)
     app_license_server = raw_input("License server hostname: ")
     app_licensee = raw_input("Licensee: ")
