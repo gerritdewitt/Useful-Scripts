@@ -7,7 +7,7 @@
 
 # Written by Gerrit DeWitt (gdewitt@gsu.edu)
 # This file created 2015-08-24/28, 2015-09-11, 2015-11-17, 2015-11-23 (Apple HW Bundle),
-# 2016-01-11, 2016-10-17, 2017-01-03, 2017-04-11.
+# 2016-01-11, 2016-10-17, 2017-01-03, 2017-04-11, 2017-06-06.
 # Copyright Georgia State University.
 # This script uses publicly-documented methods known to those skilled in the art.
 
@@ -262,7 +262,7 @@ Is this Microsoft item one of the following?
         app_version = raw_input("App (package) version: ")
         item_munki_description = item_munki_display_name
         min_macos_version = raw_input("Minimal macOS version required for this app: ")
-        app_installed_path = raw_input("Path where app is installed (relative to client): ")
+        app_installed_path = raw_input("Path where app is installed (relative to client): ").replace("\\","")
         item_munki_installs_paths = []
         item_munki_installs_paths.append(app_installed_path)
 
