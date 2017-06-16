@@ -8,17 +8,17 @@
 # 2015-08-24/28, 2015-09-11 (config profile and pkginfo creation), 2015-09-15, 2015-09-30 (first pass at Matlab postinstall scripts)
 # 2015-11-24 (conditions), 2015-11-25, 2015-12-07, 2016-03-21 (EndNote), 2016-07-28, 2016-08-30, 2016-10-03, 2016-11-09, 2016-11-14
 # 2016-11-29 (Autodesk), 2016-12-07, 2016-12-09, 2016-12-12 (SPSS), 2017-01-05/09 (MathWorks MATLAB)
-# 2017-01-11, 2017-06-06.
+# 2017-01-11, 2017-06-06, 2017-06-16.
 # Copyright Georgia State University.
 # This script uses publicly-documented methods known to those skilled in the art.
 
-import os, xml, plistlib, subprocess, sys
+import os, xml, plistlib, subprocess, sys, uuid, shutil
 
 # Script templates:
 # These are likely to require adjustment for each major MATLAB version.
 global ITEM_MUNKI_POSTINSTALL_SCRIPT_CONTENT_TEMPLATE
 ITEM_MUNKI_POSTINSTALL_SCRIPT_CONTENT_TEMPLATE = '''#!/bin/bash
-installer_app="/private/tmp/Maple2016.1MacInstaller.app"
+installer_app="/private/tmp/MapleMacInstaller.app"
 installer_bin="$installer_app/Contents/MacOS/installbuilder.sh"
 
 # Files used by installer:
@@ -54,21 +54,65 @@ if [ -d "$parent_dir" ]; then
 fi
 '''
 
-global ITEMS_TO_COPY
-ITEMS_TO_COPY = []
-COPY_ITEM = {'destination_path':"/private/tmp",
-'source_item':"replaced by create_pkginfo()",
-'destination_item':"Maple2016.1MacInstaller.app"}
-ITEMS_TO_COPY.append(COPY_ITEM)
-
 global ITEM_MUNKI_INSTALLS_ARRAY
 ITEM_MUNKI_INSTALLS_ARRAY = []
 ITEM_MUNKI_INSTALLS_ITEM = {}
 ITEM_MUNKI_INSTALLS_ITEM['type'] = "application"
 ITEM_MUNKI_INSTALLS_ITEM['path'] = "replaced by create_pkginfo()"
-ITEM_MUNKI_INSTALLS_ITEM['CFBundleVersion'] = "replaced by create_pkginfo()"
-ITEM_MUNKI_INSTALLS_ITEM['version_comparison_key'] = "CFBundleVersion"
+ITEM_MUNKI_INSTALLS_ITEM['CFBundleShortVersionString'] = "replaced by create_pkginfo()"
+ITEM_MUNKI_INSTALLS_ITEM['version_comparison_key'] = "CFBundleShortVersionString"
 ITEM_MUNKI_INSTALLS_ARRAY.append(ITEM_MUNKI_INSTALLS_ITEM)
+
+def inspect_dmg_maple(given_repo_path_to_pkg):
+    '''Looks inside a dmg with a Maple installer to gather some data about the contents.
+        Returns the basename of the installer app (in the dmg).'''
+    print "Inspecting dmg..."
+    # Default:
+    dmg_contents = []
+    maple_installer_app_basename = ''
+    # Paths:
+    munki_repo_pkg_path = os.path.join(MUNKI_PKGS_PATH,given_repo_path_to_pkg)
+    if not os.path.exists(munki_repo_pkg_path):
+        print "Not found in repo: %s" % munki_repo_pkg_path
+        return ''
+    tmp_dmg_path = os.path.join("/private/tmp","%s.dmg" % uuid.uuid4())
+    tmp_dmg_mp_path = os.path.join("/private/tmp","%s.mount-point" % uuid.uuid4())
+    # Copy dmg:
+    shutil.copyfile(munki_repo_pkg_path,tmp_dmg_path)
+    # Mount dmg:
+    try:
+        subprocess.check_call(['/usr/bin/hdiutil',
+                               'attach',
+                               '-mountpoint',
+                               tmp_dmg_mp_path,
+                               tmp_dmg_path])
+        print "Maple: Mounted copy of dmg to %s." % tmp_dmg_mp_path
+        did_mount_dmg = True
+    except subprocess.CalledProcessError:
+        did_mount_dmg = False
+    # List mounted dmg contents:
+    if did_mount_dmg:
+        dmg_contents = os.listdir(tmp_dmg_mp_path)
+    # Inspect contents:
+    for i in dmg_contents:
+        if i.endswith('.app'):
+            maple_installer_app_basename = i
+            break
+    # Unmount dmg:
+    try:
+        subprocess.check_call(['/usr/bin/hdiutil',
+                           'eject',
+                           tmp_dmg_mp_path])
+    except subprocess.CalledProcessError:
+        pass
+    # Remove copied dmg:
+    if os.path.exists(tmp_dmg_path):
+        try:
+            os.unlink(tmp_dmg_path)
+        except OSError:
+            pass
+    # Return:
+    return maple_installer_app_basename
 
 def create_items_to_copy_cmds():
     '''Converts an array of dicts describing items to copy into
@@ -113,8 +157,6 @@ def create_pkginfo(given_app_version,given_app_munki_installs_path,given_repo_pa
            '--unattended_install',
            '--pkgvers=%s' % given_app_version,
            '--displayname=%s' % ITEM_MUNKI_DISP_NAME]
-    # Update source item for "items to copy":
-    ITEMS_TO_COPY[0]['source_item'] = ITEMS_TO_COPY_SRC_ITEM
     # Make "items to copy" arg string:
     itc_args = create_items_to_copy_cmds()
     if not itc_args:
@@ -144,7 +186,7 @@ def create_pkginfo(given_app_version,given_app_munki_installs_path,given_repo_pa
     except NameError:
         pass
     try:
-        output_dict['installs'][0]['CFBundleVersion'] = given_app_version
+        output_dict['installs'][0]['CFBundleShortVersionString'] = given_app_version
         output_dict['installs'][0]['path'] = given_app_munki_installs_path
     except KeyError, IndexError:
         pass
@@ -181,14 +223,21 @@ def main():
     ITEM_MUNKI_DEVELOPER_NAME = "Maplesoft"
     ITEM_MUNKI_CATEGORY = "Math & Statistics"
     ITEM_MUNKI_DESCRIPTION = "Installs Maplesoft Maple configured to use the license server."
-    global ITEMS_TO_COPY_SRC_ITEM
-    ITEMS_TO_COPY_SRC_ITEM = "Maple2016.1MacInstaller.app"
 
     # Gather item info:
-    app_version = raw_input("Maple version: ")
-    app_munki_installs_path = raw_input("Path where app is installed (relative to client, should be something like /Applications/Maple 2016/Maple 2016.app): ").replace("\\","")
-    repo_path_to_pkg = raw_input("Path to the item in repo (relative to %s): " % MUNKI_PKGS_PATH)
+    app_version = raw_input("Maple version (CFBundleShortVersionString): ")
+    app_munki_installs_path = raw_input("Path where app is installed (relative to client, should be something like /Applications/Maple 2017/Maple 2017.app): ").replace("\\","")
+    repo_path_to_pkg = raw_input("Path to the item in repo (relative to %s): " % MUNKI_PKGS_PATH) # this is a dmg
     app_license_server = raw_input("Maple license server hostname: ")
+
+    maple_installer_app_basename = inspect_dmg_maple(repo_path_to_pkg)
+    if not maple_installer_app_basename:
+        print "Could not find Maple installer app in dmg pkg!"
+        sys.exit(1)
+    global ITEMS_TO_COPY
+    ITEMS_TO_COPY = [{'destination_path':"/private/tmp",
+                     'source_item':maple_installer_app_basename,
+                     'destination_item':"MapleMacInstaller.app"}]
 
     # Generate pkginfo:
     if not create_pkginfo(app_version,app_munki_installs_path,repo_path_to_pkg,app_license_server):
