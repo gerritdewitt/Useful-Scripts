@@ -44,8 +44,6 @@ def generate_dmg(given_app_version,given_vendor_bash_archive):
                                ITEM_MUNKI_NAME,
                                '-fs',
                                'Journaled HFS+',
-                               '-size',
-                               '10m',
                                '-layout',
                                'NONE',
                                sparse_dmg_path])
